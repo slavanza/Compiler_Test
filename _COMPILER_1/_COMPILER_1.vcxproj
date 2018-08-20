@@ -115,10 +115,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lexical.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="textProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lexical.h" />
     <ClInclude Include="textProcessor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
