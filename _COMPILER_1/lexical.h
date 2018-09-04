@@ -60,9 +60,11 @@ public:
 	void analyze();
 private:
 	bool getNextToken();
-	unsigned isConstant();
-	unsigned checkOperator();
-	void isIdentifier();
-	bool nextSymbol();
+	unsigned isConstant(); // проверка на константу
+	unsigned checkOperator(); // проверка двойных операторов
+	void isIdentifier(); // проверка на идентификатор
+	bool nextSymbol(); // получение следующего символа
 };
 
+
+/// [TODO]: Добавить ещё функций, протестировать обработку текста, работоспособносить и корректность
