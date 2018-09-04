@@ -16,7 +16,6 @@ struct lexem
 	string lex;
 	unsigned line;
 	unsigned pos;
-	lexem(unsigned lexemType, const char* lex, unsigned line, unsigned pos) { this->lexemType = lexemType; this->lex = lex; this->line = line; this->pos = pos; }
 };
 
 
@@ -28,10 +27,10 @@ vector<string> Keywords = { "if", "else", "for", "while", "do", "return" };
 
 
 // основные знаки и символы, применяемые в высказываниях
-vector<string> Operators = { "+", "-", "*", "/", "&", "|", "<", ">", "=", "!" };
+string Operators = "+-*/&|<>=!.";
 
 
-vector<string> Separators = { "{", "}", "(", ")","[", "]" };
+string Separators = "{}()[],;\"";
 
 
 // доступные для имён буквы нижнего регистра
@@ -47,14 +46,23 @@ string numbers = "0123456789";
 class lexical
 {
 	vector<lexem> lexems; // лексемы, идущие в том порядке, в котором они были встречены
-	ifstream& in;
-	ofstream& out; // возможно, придется убрать
+	const ifstream* in;
+	const ofstream* out; // возможно, придется убрать
 	string buf;
 	set<string> keyWords; // ключевые слова
-	set<string> opAndSep; // операторы и разделители
+	set<char> opAndSep; // операторы и разделители
+
+	unsigned cursor;
+	unsigned line;
 public:
 	lexical(ifstream& in, ofstream& out);
 	~lexical();
 	void analyze();
+private:
+	bool getNextToken();
+	unsigned isConstant();
+	unsigned checkOperator();
+	void isIdentifier();
+	bool nextSymbol();
 };
 
