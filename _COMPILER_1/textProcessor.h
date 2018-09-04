@@ -10,7 +10,7 @@ using namespace std;
 
 /// <summary>
 /// –асполагает только исходными параметрами, переданными при запуске,
-/// будет осуществл€ть их дальнейшую обработку и производить действи€ на еЄ основе
+/// может открывать и закрывать файловые потоки
 /// </summary>
 class textProcessor
 {
@@ -24,6 +24,8 @@ public:
 	~textProcessor();
 	ifstream& openInput();
 	ofstream& openOutput();
+	void closeInput();
+	void closeOutput();
 private:
 	ifstream* in; // потоки ввода и вывода соответственно,
 	ofstream* out; // создаютс€ после запроса на открытие файла

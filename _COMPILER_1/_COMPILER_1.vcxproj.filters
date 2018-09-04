@@ -32,5 +32,8 @@
     <ClInclude Include="lexical.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="token.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

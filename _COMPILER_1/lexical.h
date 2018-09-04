@@ -2,29 +2,36 @@
 
 #include <string>
 #include <vector>
+#include <set>
+
+#include "token.h"
+
 using std::string;
 using std::vector;
+using std::set;
 
-struct token
+struct lexem
 {
-	string chars;
-	token(const char* lpCh, int str, int seek) { chars = lpCh; }
+	unsigned lexemType;
+	string lex;
+	unsigned line;
+	unsigned pos;
+	lexem(unsigned lexemType, const char* lex, unsigned line, unsigned pos) { this->lexemType = lexemType; this->lex = lex; this->line = line; this->pos = pos; }
 };
 
 
-// возможно, в дальнейшем придётся отказаться от реализации некоторых типов, которые не потребуются для использования (таких как long int)
-vector<string> Types = { string("i8"), string("u8"), string("i16"),
-						string("u16"), string("i32"), string("u32"),
-						string("i64"), string("u64"),
-						string("bool"), string("char"),
-						string("f32"), string("f64") };
+// возможно, в дальнейшем придётся отказаться от реализации некоторых типов, которые не потребуются для использования
+vector<string> Types = { "i32", "u32", "bool", "char", "f32", "f64", "void" };
+
+
+vector<string> Keywords = { "if", "else", "for", "while", "do", "return" };
 
 
 // основные знаки и символы, применяемые в высказываниях
-vector<string> Signs = { string("+"), string("-"), string("*"), string("/"),
-						string("&"), string("|"), string("<"), string("="),
-						string("="), string("!"), string("["), string("]"),
-						string("("), string(")") };
+vector<string> Operators = { "+", "-", "*", "/", "&", "|", "<", ">", "=", "!" };
+
+
+vector<string> Separators = { "{", "}", "(", ")","[", "]" };
 
 
 // доступные для имён буквы нижнего регистра
@@ -39,10 +46,14 @@ string numbers = "0123456789";
 
 class lexical
 {
-	vector<token> input; // токены, идущие в том порядке, в котором они были встречены
-	const vector<string> const *lpText;
+	vector<lexem> lexems; // лексемы, идущие в том порядке, в котором они были встречены
+	ifstream& in;
+	ofstream& out; // возможно, придется убрать
+	string buf;
+	set<string> keyWords; // ключевые слова
+	set<string> opAndSep; // операторы и разделители
 public:
-	lexical(vector<string>* lpVector);
+	lexical(ifstream& in, ofstream& out);
 	~lexical();
 	void analyze();
 };

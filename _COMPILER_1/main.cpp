@@ -9,27 +9,27 @@ using namespace std;
 
 
 // предварительный макет для тестов, потом надо перенести в отдельный класс, чтобы main сводился к 5-7 строкам кода
+
+const int params = 2;
+
 int main(int argC, char** argV)
 {
-	try 
+	if (argC != 3)
 	{
-		if (argC < 3)
-			throw string("Not enough arguments");
-	}
-	catch (string s)
-	{
-		if (s._Equal("Not enough arguments"))
-			cout << "Usage: <parameter> <source file> <target file>" << endl;
+		cout << "Передано " << argC << " параметров" << endl << "Должно быть передано параметров: " << params << endl;
+		cout << "Использование: <файл исходного кода> <конечный файл (не обязательно)>" << endl;
 		system("pause");
-		return 1; // неверные входные параметры
+		return -1;
 	}
 	/// <begin> Обработка входных аргументов
+
 	vector<string> args;
 	for (int i = 1; i < argC; i++)
 	{
 		args.push_back(string(argV[i]));
 	}
 	textProcessor processor(args); // первоначальная обработка входных аргументов
+
 	/// <end> Обработка входных аргументов
 
 
