@@ -48,7 +48,7 @@ bool lexical::getNextToken()
 {
 	lexem lex;
 
-	getNextToken();
+	skipSpaceAndComment();
 
 	lex.pos = cursor;
 	if (cursor == '\0')
