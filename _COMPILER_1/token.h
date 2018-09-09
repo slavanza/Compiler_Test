@@ -8,9 +8,7 @@ enum tokenType {
 	FUNC, // fn
 	CHAR, // аналогичен u32, но для символов в кодировке unicode
 	INTEGER, // i32
-	UINTEGER, // u32
 	FLOAT, // f32
-	DOUBLE, // f64
 	VOID, // void
 	KEYWORD, // Вводное слово
 	STRLITERAL, // Строковый литерал

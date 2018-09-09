@@ -61,7 +61,7 @@ bool lexical::getNextToken()
 		isIdentifier();
 		lex.lexemType = IDENTIFIER;
 	}
-	else if (isdigit(cursor))
+	else if (isdigit(cursor) || current == '\'')
 	{
 		switch (isConstant())
 		{
@@ -71,14 +71,8 @@ bool lexical::getNextToken()
 		case 2 /*INTEGER*/:
 			lex.lexemType = INTEGER;
 			break;
-		case 3 /*UINTEGER*/:
-			lex.lexemType = UINTEGER;
-			break;
-		case 4 /*FLOAT*/:
+		case 3 /*FLOAT*/:
 			lex.lexemType = FLOAT;
-			break;
-		case 5 /*DOUBLE*/:
-			lex.lexemType = DOUBLE;
 			break;
 		default:
 			lex.lexemType = ERROR;
@@ -154,6 +148,120 @@ void lexical::skipSpaceAndComment()
 		}
 		skipSpaceAndComment();
 	}
+}
+
+
+unsigned lexical::isConstant()
+{
+	if (current == '\'')
+	{
+		do
+		{
+			nextSymbol();
+		} while (current != '\'' || program[cursor - 1] != '\\');
+		return 1;
+	}
+	unsigned points = 0;
+	while (isdigit(current) || current == '.')
+	{
+		if (current == '.')
+			points++;
+		nextSymbol();
+	}
+	if (!points)
+		return 2;
+	else if (points == 1)
+		return 3;
+	else
+		return 4;
+}
+
+
+unsigned lexical::checkOperator()
+{
+	int value = -1;
+	switch (current)
+	{
+	case '"':
+		nextSymbol();
+		while (current != '"')
+		{
+			if (!nextSymbol())
+				throw exception("Зацикливание в поиске stringLiteral");
+		}
+		return STRLITERAL;
+		break;
+	case '+': 
+		if (program[current + 1] == '=') 
+			value = OPPLUSEQ; // += 
+		else if (program[value + 1] == '+') 
+			value = OPPLUSPLUS; // ++ 
+		else
+			return OPPLUS;
+		break; 
+	case '-': 
+		if (program[current + 1] == '=') 
+			value = OPMINEQ; // -= 
+		else if (program[current + 1] == '-') 
+			value = OPMINMIN; // -- 
+		else 
+			return OPMIN;
+		break; 
+	case '*': 
+		if (program[current + 1] == '=')
+			value = OPMULTIEQ; // *= 
+		else 
+			return OPMULTI; 
+		break; 
+	case '/': 
+		if (program[current + 1] == '=') 
+			value = OPMULTIEQ; // /= 
+		else 
+			return OPDIV; 
+		break; 
+	case '>':
+		if (program[current + 1] == '=')
+			value = OPMOREEQ; // >=
+		else return OPMORE;
+		break;
+	case '<':
+		if (program[current + 1] == '=') 
+			value = OPLESSEQ; // <=
+		else return OPLESS;
+		break;
+	case '!':
+		if (program[current + 1] == '=')
+			value = OPNOTEQ; // !=
+		else 
+			return OPNOT;
+		break;
+	case '=':
+		if (program[current + 1] == '=') 
+			value = OPCOMPRARE; // !=
+		else
+			return OPEQ;
+		break;
+	case '&': return AMP;
+	case '.': return DOT;
+	case ',': return COMMA;
+	case ';': return DCOMMA;
+	case '{': return LBR;
+	case '}': return RBR;
+	case '(': return LCBR;
+	case ')': return RCBR;
+	default: return ERROR;
+	}
+	if (value != -1)
+		nextSymbol();
+
+	return value;
+}
+
+
+void lexical::isIdentifier()
+{
+	while (isalnum(current) || current == '_')
+		nextSymbol();
 }
 
 

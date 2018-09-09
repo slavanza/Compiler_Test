@@ -23,7 +23,7 @@ struct lexem
 
 
 // возможно, в дальнейшем придётся отказаться от реализации некоторых типов, которые не потребуются для использования
-vector<string> Types = { "i32", "u32", "bool", "char", "f32", "f64", "void" };
+vector<string> Types = { "i32", "bool", "char", "f32", "void" };
 
 
 vector<string> Keywords = { "if", "else", "for", "while", "do", "return" };
