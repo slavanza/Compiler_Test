@@ -3,12 +3,15 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <fstream>
 
 #include "token.h"
 
 using std::string;
 using std::vector;
 using std::set;
+using std::ifstream;
+using std::ofstream;
 
 struct lexem
 {
@@ -48,9 +51,10 @@ class lexical
 	vector<lexem> lexems; // лексемы, идущие в том порядке, в котором они были встречены
 	const ifstream* in;
 	const ofstream* out; // возможно, придется убрать
-	string buf;
+	string program;
 	set<string> keyWords; // ключевые слова
 	set<char> opAndSep; // операторы и разделители
+	char current; // текущий символ
 
 	unsigned cursor;
 	unsigned line;
@@ -60,10 +64,12 @@ public:
 	void analyze();
 private:
 	bool getNextToken();
+	bool nextSymbol(); // получение следующего символа
+	void skipSpaceAndComment(); // пропуск пробелов и комментариев
 	unsigned isConstant(); // проверка на константу
 	unsigned checkOperator(); // проверка двойных операторов
 	void isIdentifier(); // проверка на идентификатор
-	bool nextSymbol(); // получение следующего символа
+	void addLexInfo(lexem& lex); // заполнение лексемы
 };
 
 

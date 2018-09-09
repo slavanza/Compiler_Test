@@ -4,7 +4,7 @@
 void textProcessor::proceed()
 {
 	inputFile = text[0];
-	if(text.size > 1)
+	if(text.size() > 1)
 		outputFile = text[1];
 	else
 	{
