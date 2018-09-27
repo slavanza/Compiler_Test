@@ -9,7 +9,7 @@ lexical::lexical(ifstream& in, ofstream& out)
 	this->in = &in;
 	this->out = &out;
 
-	// вводные слова
+	// ключевые слова
 	for (auto k = begin(Keywords); k < end(Keywords); k++)
 		keyWords.insert(*k);
 	// типы
@@ -40,7 +40,7 @@ lexical::~lexical()
 
 void lexical::analyze()
 {
-	
+	while (getNextToken());
 }
 
 
